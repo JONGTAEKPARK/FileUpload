@@ -12,7 +12,7 @@
 </head>
 <body>
 	<%
-		String directory = application.getRealPath("/upload/");
+		String directory = "C:/upload";
 		int maxSize = 1024 * 1024 * 100;
 		String encoding="utf-8";
 	
@@ -22,6 +22,13 @@
 		
 		String fileName = multipartRequest.getOriginalFileName("file");
 		String fileRealName = multipartRequest.getFilesystemName("file");
+		
+		if(!fileName.endsWith(".jpg") && !fileName.endsWith(".hwp") &&
+				!fileName.endsWith(".pdf") && !fileName.endsWith(".xls")){
+			File file = new File(directory + fileRealName);
+			file.delete();
+			out.write("업로드 할 수 없는 확장자입니다.");
+		}
 		
 		new FileDAO().upload(fileName, fileRealName);
 		out.write("파일명: " + fileName + "<br>" );
